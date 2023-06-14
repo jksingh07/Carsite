@@ -118,3 +118,16 @@ class Description(models.Model):
     # A dunder method in which the title of the description will be shown in the admin page
     def __str__(self):
         return self.title
+
+
+class LabMember(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    semester = models.IntegerField()
+    personal_page = models.URLField()
+
+    def __str__(self):
+        return self.first_name
+
+    class Meta:
+        ordering = ['first_name']
