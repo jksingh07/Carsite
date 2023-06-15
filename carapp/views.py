@@ -3,6 +3,9 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from .models import CarType, Vehicle, LabMember
 from django.http import Http404
+from django.views import View
+from django.views.generic import CreateView, ListView, DetailView
+
 # Create your views here.
 def homepage(request):
     cartype_list = CarType.objects.all().order_by('id')
@@ -66,3 +69,30 @@ def lab_members(request):
         'members': members
     }
     return render(request, 'lab_member.html', context)
+
+
+# CLASS BASED VIEWS
+class LabMembersView(View):
+    def get(self, request):
+        members = LabMember.objects.order_by('first_name')
+        context = {
+            'members': members
+        }
+        return render(request, 'lab_member.html', context)
+
+class AboutUsView(View):
+    def get(self, request):
+        response = HttpResponse()
+        heading1 = '<h1>' +' '+'This is a Car Showroom'+ '</h1>'
+        response.write(heading1)
+        return response
+# Differences noticed:
+# - The FBV is a simple Python function that takes a request argument and returns a response.
+# - The CBV is a class that inherits from the `View` class provided by Django.
+# - In the FBV, the view logic is written directly in the function body.
+# - In the CBV, the view logic is written in methods corresponding to HTTP methods (e.g., `get`, `post`, etc.).
+# - In the FBV, the function name is used as the view's name when defining URL patterns.
+# - In the CBV, the view is referenced as `MyView.as_view()` when defining URL patterns.
+# - The CBV provides pre-defined methods for different HTTP methods that can be overridden as needed.
+# - The CBV allows for easy reuse of common functionality by leveraging inheritance and mixins.
+# - The CBV provides additional features like class-based decorators, mixins, and method-based dispatching.
