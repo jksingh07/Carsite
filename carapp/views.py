@@ -20,7 +20,7 @@ def homepage(request):
     heading2 = '<h1>' + 'Different types of Vehicles' + '</h1>'
     response.write(heading2)
 
-    vehicles_list = Vehicle.objects.all().order_by('car_price')[:10]
+    vehicles_list = Vehicle.objects.all().order_by('car_price')[::-1][:10]
 
     for vehicle in vehicles_list:
         para = '<p>' +' '+ str(vehicle.id) + ' '+ str(vehicle) + ' '+ str(vehicle.car_price) + '</p>'
