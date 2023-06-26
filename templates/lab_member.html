@@ -7,8 +7,9 @@
     <h1>Lab Members</h1>
     <ul>
         {% for member in members %}
-            <li>{{ member.first_name }} {{ member.last_name }} - Semester {{ member.semester }} (<a href="{{ member.personal_page }}">Personal Page</a>)</li>
+            <li>{{ member.first_name }} {{ member.last_name }} - Semester {{ member.semester }} (<a href="{{ member.personal_page }}" target="_blank">Personal Page</a>)</li>
         {% endfor %}
     </ul>
+    <a href={% url 'carapp:homepage' %}> Go to Home Page</a>
 </body>
 </html>

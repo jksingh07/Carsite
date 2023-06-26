@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Details</title>
+</head>
+<body>
+    <h1>Car Details</h1>
+
+    {% if cartype %}
+        <h2>Brand: {{ cartype }}</h2>
+        <p>Car_Name  Brand  Price Inventory  Instock</p>
+        <ol>
+        {% for vehicle in vehicles %}
+            <li>{{ vehicle }} &nbsp;&nbsp;&nbsp; {{ vehicle.car_type }} &nbsp;&nbsp;&nbsp; {{ vehicle.car_price }} &nbsp;&nbsp;&nbsp; {{ vehicle.description }} &nbsp;&nbsp;&nbsp; {{ vehicle.inventory }} &nbsp;&nbsp;&nbsp; {{ vehicle.instock }}</li>
+        {% endfor %}
+        </ol>
+    {% else %}
+        <p>Page Not Found</p>
+    {% endif %}
+
+    <a href={% url 'carapp:homepage' %}>Go to Home Page</a>
+</body>
+</html>
