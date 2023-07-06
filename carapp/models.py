@@ -32,6 +32,30 @@ class Vehicle(models.Model):
    # II.	Add an optional field in the Vehicle table which describes the product in a few words. This should be a text field
     description = models.TextField(blank=True)
 
+    # New field for car features
+    CRUISE_CONTROL = 'CC'
+    AUDIO_INTERFACE = 'AI'
+    AIRBAGS = 'AB'
+    AIR_CONDITIONING = 'AC'
+    SEAT_HEATING = 'SH'
+    PARK_ASSIST = 'PA'
+    POWER_STEERING = 'PS'
+    REVERSING_CAMERA = 'RC'
+    AUTO_START_STOP = 'AS'
+
+    FEATURE_CHOICES = (
+        (CRUISE_CONTROL, 'Cruise Control'),
+        (AUDIO_INTERFACE, 'Audio Interface'),
+        (AIRBAGS, 'Airbags'),
+        (AIR_CONDITIONING, 'Air Conditioning'),
+        (SEAT_HEATING, 'Seat Heating'),
+        (PARK_ASSIST, 'Park Assist'),
+        (POWER_STEERING, 'Power Steering'),
+        (REVERSING_CAMERA, 'Reversing Camera'),
+        (AUTO_START_STOP, 'Auto Start/Stop'),
+    )
+
+    features = models.CharField(max_length=2, choices=FEATURE_CHOICES, blank=True)
 
     # A dunder method which is responsible for showing the Car name in the admin page
     def __str__(self):

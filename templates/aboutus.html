@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>This is a Car Showroom</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block body_block %}
     <h1>Car Showroom</h1>
-    <a href="{% url 'carapp:homepage' %}">Go to Home Page</a>
-</body>
-</html>
+{#    <a href="{% url 'carapp:homepage' %}">Go to Home Page</a>#}
+{% endblock %}

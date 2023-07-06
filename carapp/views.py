@@ -105,6 +105,18 @@ class AboutUsView(View):
         heading1 = '<h1>' +' '+'This is a Car Showroom'+ '</h1>'
         response.write(heading1)
         return response
+
+class Vehicles(View):
+    def get(self, request):
+        cars = Vehicle.objects.all()
+        context={
+            'cars':cars
+        }
+        return render(request, 'vehicles.html', context)
+
+class OrderHere(View):
+    def get(self, request):
+        return render(request, 'orderhere.html', {})
 # Differences noticed:
 # - The FBV is a simple Python function that takes a request argument and returns a response.
 # - The CBV is a class that inherits from the `View` class provided by Django.
