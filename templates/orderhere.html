@@ -6,7 +6,7 @@
     <form method="post" action="{% url 'carapp:OrderHere' %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Order</button>
+    <button class="btn-primary" type="submit">Order</button>
     </form>
 
     {% if msg %}

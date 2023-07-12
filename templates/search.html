@@ -16,5 +16,5 @@
         <h1><a href="/{{selected_vehicle.car_type.id}}">{{ selected_vehicle.car_name }}</a></h1>
         <p>Price: ${{ selected_vehicle.car_price }}</p>
     {% endif %}
-
+<p><a class="btn btn-primary" href="{% url 'carapp:OrderHere' %}">Place a new order</a></p>
 {% endblock %}

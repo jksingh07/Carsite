@@ -4,15 +4,32 @@
 
     {% if cartype %}
         <h2>Brand: {{ cartype }}</h2>
-        <p>Car_Name  Brand  Price Inventory  Instock</p>
-        <ol>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Car Name</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Inventory</th>
+                <th>Instock</th>
+            </tr>
+            </thead>
+        <tbody>
         {% for vehicle in vehicles %}
-            <li>{{ vehicle }} &nbsp;&nbsp;&nbsp; {{ vehicle.car_type }} &nbsp;&nbsp;&nbsp; {{ vehicle.car_price }} &nbsp;&nbsp;&nbsp; {{ vehicle.description }} &nbsp;&nbsp;&nbsp; {{ vehicle.inventory }} &nbsp;&nbsp;&nbsp; {{ vehicle.instock }}</li>
+            <tr>
+                <td>{{ vehicle }}</td>
+                <td>{{ vehicle.car_type }}</td>
+                <td>{{ vehicle.car_price }}</td>
+                <td>{{ vehicle.inventory }}</td>
+                <td>{{ vehicle.instock }}</td>
+            </tr>
         {% endfor %}
-        </ol>
+
+        </tbody>
+        </table>
     {% else %}
-        <p>Page Not Found</p>
+        <p class="test-danger">Page Not Found</p>
     {% endif %}
-<p><a href="{% url 'carapp:OrderHere' %}">Place a new order</a></p>
+<p><a class="btn btn-primary" href="{% url 'carapp:OrderHere' %}">Place a new order</a></p>
 {#    <a href={% url 'carapp:homepage' %}>Go to Home Page</a>#}
 {% endblock %}

@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 {% block body_block %}
 <h2>Available Vehicles</h2>
-  <ul>
+  <table class="table">
+  <thead>
+    <tr>
+      <th>Car Name</th>
+      <th>Car Price</th>
+    </tr>
+  </thead>
+  <tbody>
     {% for car in cars %}
       {% if car.instock %}
-      <li>{{ car.car_name }} - ${{ car.car_price }}
+      <tr>
+        <td>{{ car.car_name }}</td>
+        <td>${{ car.car_price }}</td>
+      </tr>
       {% endif %}
-        </li>
     {% endfor %}
-  </ul>
-  <p><a href="{% url 'carapp:OrderHere' %}">Place a new order</a></p>
+  </tbody>
+</table>
+  <p><a class="btn btn-primary" href="{% url 'carapp:OrderHere' %}">Place a new order</a></p>
 {% endblock %}
