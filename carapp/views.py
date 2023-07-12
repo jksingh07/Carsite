@@ -93,6 +93,7 @@ def lab_members(request):
 # CLASS BASED VIEWS
 class LabMembersView(View):
     def get(self, request):
+
         members = LabMember.objects.order_by('first_name')
         context = {
             'members': members
@@ -117,6 +118,21 @@ class Vehicles(View):
 class OrderHere(View):
     def get(self, request):
         return render(request, 'orderhere.html', {})
+
+class SearchView(View):
+    def get(self, request):
+        vehicles = Vehicle.objects.all()
+        context = {
+            'vehicles': vehicles
+        }
+        return render(request, 'search.html', context)
+
+    def post(self, request):
+        vehicles = Vehicle.objects.all()
+        selected_vehicle_id = request.POST.get('selected_vehicle')
+        selected_vehicle = get_object_or_404(Vehicle, pk=selected_vehicle_id)
+        return render(request, 'search.html', {'vehicles': vehicles,'selected_vehicle': selected_vehicle})
+
 # Differences noticed:
 # - The FBV is a simple Python function that takes a request argument and returns a response.
 # - The CBV is a class that inherits from the `View` class provided by Django.
