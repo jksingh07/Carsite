@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body_block %}
  <form method="post" action="{% url 'carapp:search' %}">
- <h1>Vehicle Search</h1>
+ <h2>Vehicle Search</h2>
     {% csrf_token %}
     <label for="selected_vehicle">Select a vehicle:</label>
     <select name="selected_vehicle" id="selected_vehicle">
