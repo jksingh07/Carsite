@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import LabMembersView, AboutUsView, Vehicles, OrderHere, SearchView
+from .views import LabMembersView, AboutUsView, Vehicles, OrderHereView, SearchView
 
 app_name = 'carapp'
 urlpatterns = [
@@ -11,6 +11,6 @@ urlpatterns = [
     path('LabMembers/', LabMembersView.as_view(), name='LabMembers'),
     path('<int:cartype_no>', views.cardetail, name='cardetail'),
     path('vehicles/', Vehicles.as_view(), name='Vehicles'),
-    path('order/', OrderHere.as_view(), name='OrderHere'),
+    path('order/', OrderHereView.as_view(), name='OrderHere'),
     path('search/', SearchView.as_view(), name='search'),
 ]

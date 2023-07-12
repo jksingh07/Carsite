@@ -4,11 +4,11 @@ from .models import OrderVehicle
 class OrderVehicleForm(forms.ModelForm):
     class Meta:
         model = OrderVehicle
-        fields = ['vehicle', 'buyer', 'vehicles_ordered']
+        fields = ['vehicle', 'buyer', 'quantity']
         labels = {
             'vehicle': 'Vehicle',
             'buyer': 'Buyer',
-            'vehicles_ordered': 'Number of Vehicles Ordered'
+            'quantity': 'Number of Vehicles Ordered'
         }
         widgets = {
             'buyer': forms.Select(attrs={'class': 'form-control'}),

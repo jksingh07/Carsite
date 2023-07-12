@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
-from .models import CarType, Vehicle, LabMember
 from django.http import Http404
 from django.views import View
+from .forms import OrderVehicleForm, ContactForm
+from .models import CarType, Vehicle, LabMember
 from django.views.generic import CreateView, ListView, DetailView
 
 # Create your views here.
@@ -115,10 +116,32 @@ class Vehicles(View):
         }
         return render(request, 'vehicles.html', context)
 
-class OrderHere(View):
+class OrderHereView(View):
     def get(self, request):
-        return render(request, 'orderhere.html', {})
+        msg = ''
+        vehiclelist = Vehicle.objects.all()
+        form = OrderVehicleForm()
+        return render(request, 'orderhere.html', { 'form': form, 'msg': msg, 'vehiclelist': vehiclelist})
 
+    def post(self, request):
+        msg = ''
+        vehiclelist = Vehicle.objects.all()
+        form = OrderVehicleForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            if order.quantity <= order.vehicle.inventory:
+                order.vehicle.inventory -= order.quantity
+                order.vehicle.save()
+                order.status = 1
+                order.save()
+                msg = 'Your order has been placed successfully.'
+            else:
+                msg = 'We do not have sufficient stock to fulfill your order.'
+                return render(request, 'nosuccess_order.html', {'msg': msg})
+        else:
+            msg = 'There was an error with your order. Please try again.'
+
+        return render(request, 'orderhere.html', {'form': form, 'msg': msg, 'vehiclelist': vehiclelist})
 class SearchView(View):
     def get(self, request):
         vehicles = Vehicle.objects.all()
