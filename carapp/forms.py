@@ -12,6 +12,7 @@ class OrderVehicleForm(forms.ModelForm):
         }
         widgets = {
             'buyer': forms.Select(attrs={'class': 'form-control'}),
+            'vehicle': forms.Select(attrs={'class':'form-control'}),
         }
 
 class ContactForm(forms.Form):

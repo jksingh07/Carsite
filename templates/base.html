@@ -29,12 +29,29 @@
     </li>
     <li class="nav-item hbar1">
       <a class="nav-link" href="{% url 'carapp:search' %}">Search</a>
+    {% if user.is_authenticated %}
     </li>
+      <li class="nav-item hbar1">
+      <a class="nav-link" href="{% url 'carapp:list_of_orders' %}">Your Orders</a>
+    </li>
+    {% endif %}
+
+    <li class="nav-item hbar1">
+        {% if user.is_authenticated %}
+      <a class="nav-link" href="{% url 'carapp:logout_here' %}">Logout</a>
+        {% else %}
+        <a class="nav-link" href="{% url 'carapp:login_here' %}">Login</a>
+        {% endif %}
+    </li>
+
   </ul>
 </nav>
 
 <div class="container">
-  <h1 class="mt-3 text-primary">{% block myhdg %} Welcome to our online car store {% endblock %}</h1>
+  <h1 class="mt03 text-primary">{% block myhdg %} Welcome to our online car store {% endblock %}</h1>
+    {% if user.is_authenticated %}
+      <p>Welcome, {{ user.username }}!</p>
+    {% endif %}
   {% block body_block %}*** {% endblock %}
 </div>
 <hr />

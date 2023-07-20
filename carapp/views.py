@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.views import View
 from .forms import OrderVehicleForm, ContactForm
-from .models import CarType, Vehicle, LabMember
+from .models import CarType, Vehicle, LabMember, OrderVehicle
+from django.contrib.auth import login, logout, authenticate
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, ListView, DetailView
 
 # Create your views here.
@@ -28,19 +31,76 @@ from django.views.generic import CreateView, ListView, DetailView
 #         response.write(para)
 #
 #     return response
-def homepage(request):
-    cartype_list = CarType.objects.all().order_by('id')
-    context = {
-        'cartype_list': cartype_list
-    }
-    return render(request, 'homepage.html', context)
+
+def login_here(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('carapp:homepage'))
+            else:
+                return HttpResponse("Your Account is Disabled")
+        else:
+            return HttpResponse("Incorrect login details")
+    else:
+        return render(request, 'login_here.html')
+
+@login_required
+def logout_here(request):
+    # Log the user out and redirect to the homepage
+    logout(request)
+    return HttpResponseRedirect(reverse('carapp:homepage'))
+
+
+@login_required
+def list_of_orders(request):
+    # Check if the user is a buyer
+    # print("here")
+    user = request.user
+
+    if hasattr(user, 'buyer'):
+        # Get all orders placed by the user
+        orders = OrderVehicle.objects.filter(buyer=request.user)
+        # Render the list of orders template with the orders
+        print(orders)
+        return render(request, 'list_of_orders.html', {'orders': orders})
+    else:
+        # Return a message if the user is not a buyer
+        return render(request, 'list_of_orders.html', {'message': 'You are not registered'})
+
+# def homepage(request):
+#     cartype_list = CarType.objects.all().order_by('id')
+#     context = {
+#         'cartype_list': cartype_list
+#     }
+#     return render(request, 'homepage.html', context)
+
+
+class HomepageView(View):
+    def get(self, request):
+        cartype_list = CarType.objects.all().order_by('id')
+        # Pass the cartype_list variable as context to the 'homepage.html' template
+        session_count = request.session.get('session_count', 0)
+        session_count += 1
+        request.session['session_count'] = session_count
+        context = {
+            'cartype_list': cartype_list,
+            'session_count': session_count,
+        }
+        return render(request, 'homepage.html', context)
+
 def aboutus(request):
-
-    # response = HttpResponse()
-    # heading1 = '<h1>' +' '+'This is a Car Showroom'+ '</h1>'
-    # response.write(heading1)
-
-    return render(request, 'aboutus.html')
+    session_count = request.session.get('session_count', 0)
+    session_count+=1
+    request.session['session_count'] = session_count
+    response = render(request, 'aboutus.html', {'session_count': session_count})
+    response.set_cookie('counter', 10, max_age=10)
+    return response
 
 # def cardetail(request, cartype_no):
 #     response = HttpResponse()
@@ -142,6 +202,7 @@ class OrderHereView(View):
             msg = 'There was an error with your order. Please try again.'
 
         return render(request, 'orderhere.html', {'form': form, 'msg': msg, 'vehiclelist': vehiclelist})
+
 class SearchView(View):
     def get(self, request):
         vehicles = Vehicle.objects.all()
