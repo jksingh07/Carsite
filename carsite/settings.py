@@ -50,6 +50,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Set up session engine
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 ROOT_URLCONF = 'carsite.urls'
 
 TEMPLATES = [

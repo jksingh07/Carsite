@@ -3,7 +3,8 @@ from django.db import models
 
 # Django's import statement for including the User model from the auth app
 from django.contrib.auth.models import User
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Definition of CarType model
 class CarType(models.Model):
@@ -94,7 +95,12 @@ class Buyer(User):
     def __str__(self):
         return self.username
 
-
+# @receiver(post_save, sender=User)
+# def create_buyer(sender, instance, created, **kwargs):
+#     if created:
+#         Buyer.objects.create(user=instance)
+#
+# post_save.connect(create_buyer,sender=User)
 # -_-_-_-_-_-_-_-_-_-_ Our new model named OrderVehicle -_-_-_-_-_-_-_-_-_-_-_-_-_-_
 class OrderVehicle(models.Model):
     # We do have 4 different choices for the orders.

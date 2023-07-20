@@ -3,11 +3,12 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.views import View
-from .forms import OrderVehicleForm, ContactForm
+from .forms import OrderVehicleForm, ContactForm, BuyerCreationForm
 from .models import CarType, Vehicle, LabMember, OrderVehicle
 from django.contrib.auth import login, logout, authenticate
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, ListView, DetailView
 
 # Create your views here.
@@ -73,6 +74,18 @@ def list_of_orders(request):
         # Return a message if the user is not a buyer
         return render(request, 'list_of_orders.html', {'message': 'You are not registered'})
 
+
+def sign_up(request):
+    if request.method == 'POST':
+        form = BuyerCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirect to a success page or the homepage
+            return redirect('carapp:homepage')  # Change 'home' to the name of your homepage URL pattern
+    else:
+        form = BuyerCreationForm()
+
+    return render(request, 'sign_up.html', {'form': form})
 # def homepage(request):
 #     cartype_list = CarType.objects.all().order_by('id')
 #     context = {
