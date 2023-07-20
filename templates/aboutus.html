@@ -2,5 +2,34 @@
 {% block body_block %}
     <h2>Car Showroom</h2>
     <p>Session Count: {{ session_count }}</p>
+    {% if request.session.session_expired_message %}
+    <div class="alert alert-warning">
+        {{ request.session.session_expired_message }}
+    </div>
+    {% comment %} Clear the message from the session to prevent displaying it again on subsequent requests {% endcomment %}
+    {% if 'session_expired_message' in request.session %}{% endif %}
+{% endif %}
 {#    <a href="{% url 'carapp:homepage' %}">Go to Home Page</a>#}
+    <!-- homepage.html or any other template -->
+{% if request.session.session_expired_message %}
+    <!-- Hidden element to store the session message -->
+    <div style="display: none;" id="sessionExpiredMessage">{{ request.session.session_expired_message }}</div>
+{% endif %}
+
+<!-- Your other HTML content -->
+
+<!-- JavaScript to display the message after 1 hour -->
+<script>
+    // Get the session message from the hidden element
+    const sessionExpiredMessage = document.getElementById('sessionExpiredMessage');
+
+    // If the session message exists, set a timeout to display it after 60 seconds
+    if (sessionExpiredMessage) {
+        setTimeout(function () {
+            alert(sessionExpiredMessage.textContent);
+        }, 60000);
+    }
+</script>
+
+
 {% endblock %}

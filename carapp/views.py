@@ -8,6 +8,7 @@ from .models import CarType, Vehicle, LabMember, OrderVehicle
 from django.contrib.auth import login, logout, authenticate
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView, ListView, DetailView
 
@@ -66,7 +67,12 @@ def list_of_orders(request):
     # Check if the user is a buyer
     # print("here")
     user = request.user
-
+    if request.user.is_authenticated:
+        request.session.set_expiry(settings.EXPIRY_LIMIT)
+        request.session['session_expired_message'] = 'Your Session is Expired, Login Again'
+        # # Clear the message from the session after displaying it
+        # if 'session_expired_message' in request.session:
+        #     del request.session['session_expired_message']
     if hasattr(user, 'buyer'):
         # Get all orders placed by the user
         orders = OrderVehicle.objects.filter(buyer=request.user)
@@ -104,6 +110,13 @@ def sign_up(request):
 
 class HomepageView(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            request.session.set_expiry(settings.EXPIRY_LIMIT)
+            request.session['session_expired_message'] = 'Your Session is Expired, Login Again'
+            # # Clear the message from the session after displaying it
+            # if 'session_expired_message' in request.session:
+            #     del request.session['session_expired_message']
+
         cartype_list = CarType.objects.all().order_by('id')
         # Pass the cartype_list variable as context to the 'homepage.html' template
         session_count = request.session.get('session_count', 0)
@@ -116,6 +129,12 @@ class HomepageView(View):
         return render(request, 'homepage.html', context)
 
 def aboutus(request):
+    if request.user.is_authenticated:
+        request.session.set_expiry(settings.EXPIRY_LIMIT)
+        request.session['session_expired_message'] = 'Your Session is Expired, Login Again'
+        # # Clear the message from the session after displaying it
+        # if 'session_expired_message' in request.session:
+        #     del request.session['session_expired_message']
     session_count = request.session.get('session_count', 0)
     session_count+=1
     request.session['session_count'] = session_count
