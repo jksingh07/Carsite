@@ -77,12 +77,17 @@ def list_of_orders(request):
 
 def sign_up(request):
     if request.method == 'POST':
+        # form = UserCreationForm(request.POST)
         form = BuyerCreationForm(request.POST)
         if form.is_valid():
+            print("Valid Form Data")
             form.save()
             # Redirect to a success page or the homepage
             return redirect('carapp:homepage')  # Change 'home' to the name of your homepage URL pattern
+        else:
+            print("Invalid Form Data")
     else:
+        # form = UserCreationForm()
         form = BuyerCreationForm()
 
     return render(request, 'sign_up.html', {'form': form})

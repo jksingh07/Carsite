@@ -29,12 +29,12 @@
     </li>
     <li class="nav-item hbar1">
       <a class="nav-link" href="{% url 'carapp:search' %}">Search</a>
-    {% if user.is_authenticated %}
+{#    {% if user.is_authenticated %}#}
     </li>
       <li class="nav-item hbar1">
       <a class="nav-link" href="{% url 'carapp:list_of_orders' %}">Your Orders</a>
     </li>
-    {% endif %}
+{#    {% endif %}#}
 
     {% if user.is_authenticated %}
     <li class="nav-item hbar1">
